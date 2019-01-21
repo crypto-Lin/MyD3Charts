@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>stableCoinNet chart</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="ForceDirectedGraphHover.js"></script>
+    <style>
+        body {
+          overflow: hidden;
+          margin: 0;
+          font-size: 14px;
+          font-family: "Helvetica Neue", Helvetica;
+        }
+
+        #chart {
+          position: absolute;
+          top: 50px;
+          left: 100px;
+        }   
+    </style>
+  </head>
+  <body>
+
+    <div id="body">
+    <div id="chart" style="position:absolute; left:600px; top:300px"></div>
+    </div>
+
+    <div
+      class="container"
+      style="max-width: 960px; margin: auto; margin-top: 2em; text-align:center"
+    >
+      <form id="form" action="">
+        <input
+          style="width: 40em"
+          id="stableCoinName"
+          type="text"
+          placeholder="输入稳定币"
+        />
+        <button>查询数据</button>
+      </form>
+      <hr />
+      <h4 id="currentName"></h4>
+      <code id="res"></code>
+      <script type="text/javascript">
+        document.getElementById("form").addEventListener("submit", e => {
+          e.preventDefault();
+          let stableCoinName = document.getElementById("stableCoinName").value;
+          let fetchData = fetch(`http://47.99.63.95:8003/stableCoin_dailyFlow_demo/?query=${stableCoinName}`)
+            .then(res => res.json());
+
+            fetchData
+            .then(obj => {
+                let a = JSON.stringify(obj);
+                //console.debug("OBJ1: ", JSON.stringify(obj));
+                demo_net(obj);
+                //console.debug("OBJ2: ", JSON.stringify(obj));
+                // demo_net(obj);
+                // console.debug("OBJ3: ", JSON.stringify(obj));
+            });
+            
+
+            // fetchData
+            // .then(obj => {
+            //     console.debug("OBJ1: ", JSON.stringify(obj));
+            //     find_nodes([{'group': 0, 'id': '0x9125eb7c65254fc221d614d1f241b1468f575111'}], obj);
+            //     console.debug("OBJ2: ", JSON.stringify(obj));
+            //     find_nodes([{'group': 0, 'id': '0x9125eb7c65254fc221d614d1f241b1468f575111'}], obj);
+            //     console.debug("OBJ3: ", JSON.stringify(obj));
+
+            // })
+
+          // fetchData
+          //   .then(res => {
+          //     document.getElementById("res").innerText = JSON.stringify(res);
+          //     document.getElementById(
+          //       "currentName"
+          //     ).innerText = `查询稳定币：${stableCoinName}`;
+          //   })
+          //   .catch(err => {
+          //     document.getElementById("currentName").innerText = "";
+          //     document.getElementById("res").innerText = err;
+          //   })
+            
+        });
+
+        function demo_net(d) { 
+ 
+            ForceDirectedGraph.render(d);
+
+
+        }    
+
+        // function find_flow_by_recursion(nodesArray, data, nodes_found_index){
+        //     let next_node_pool = new Set();
+            
+        //     for (let i = nodesArray.length; i--;){
+        //         let index = data.nodes.findIndex(dict => dict.id === nodesArray[i].id);
+        //         //console.log('index', index);
+        //         nodes_found_index.add(index);
+
+        //         let next_node_index = new Array();
+        //         for (let j = data.links.length; j--;){
+        //             if (index == data.links[j].source){
+        //                 next_node_index.push(data.links[j].target);
+        //             }
+        //         }
+        //         for (let i = next_node_index.length; i--; ){
+        //             next_node_pool.add(next_node_index[i]);
+        //         }
+            
+        //     }
+        //     let next_round = new Set([...next_node_pool].filter(x => !nodes_found_index.has(x)));
+        //     let array = Array.from(next_round);
+
+        //     if (array.length > 0){
+        //         let next_nodes = new Array();
+        //         for (let i = array.length; i--;){
+        //             next_nodes.push(data.nodes[array[i]]);
+        //         }
+        //         return next_nodes;
+        //     }
+        //     else {
+        //         return [];
+        //     }
+            
+        // }  
+
+        // function find_nodes(startNode, data){
+        //     var nodes_found_index = new Set();
+        //     var next_nodes = new Array();
+        //     var cnt = 0;
+
+        //     next_nodes = find_flow_by_recursion(startNode, data, nodes_found_index);
+        //     console.log(cnt, next_nodes.length);
+
+        //     while(next_nodes.length > 0){
+        //         console.log('enter the loop!')
+        //         cnt = cnt+1;
+        //         next_nodes = find_flow_by_recursion(next_nodes, data, nodes_found_index);
+        //         console.log(cnt, next_nodes);
+        //     }
+        //     console.log('specres:', Array.from(nodes_found_index));
+        //     return Array.from(nodes_found_index);
+        // }
+               
+      </script>
+    </div>
+    
+  </body>
+</html>
